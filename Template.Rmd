@@ -1,0 +1,287 @@
+---
+# IMPORTANT: Change settings here, but DO NOT change the spacing. 
+# Remove comments and add values where applicable. 
+# The descriptions below should be self-explanatory
+
+title: "Marinus_Tutorial"
+#subtitle: "This will appear as Right Header"
+
+documentclass: "elsarticle"
+
+# Comment: ----- Follow this pattern for up to 5 authors
+Author1: "Marinus Louw"  # First Author
+Ref1: "Financial Economtrics Course, Stellenbosch University, South Africa" # First Author's Affiliation
+Email1: "marinuslouw\\@icloud.com" # First Author's Email address
+
+CorrespAuthor_1: TRUE  # If corresponding author is author 3, e.g., use CorrespAuthor_3: TRUE
+
+keywords: "GARCH" # Use \\sep to separate
+JELCodes: "L250 \\sep L100"
+
+# Comment: ----- Manage headers and footers:
+#BottomLFooter: $Title$
+#BottomCFooter:
+#TopLHeader: \leftmark # Adds section name at topleft. Remove comment to add it.
+BottomRFooter: "\\footnotesize Page \\thepage\\" # Add a '#' before this line to remove footer.
+addtoprule: TRUE
+addfootrule: TRUE               # Use if footers added. Add '#' to remove line.
+
+# Setting page margins:
+margin: 2.3 # Sides
+bottom: 2 # bottom
+top: 2.5 # Top
+
+linenumbers: FALSE # Used when submitting to journal
+AddTitle: TRUE # Used when submitting to peer reviewed platform. This will remove author names. 
+
+HardSet_layout: TRUE # Hard-set the spacing of words in your document. This will stop LaTeX squashing text to fit on pages, e.g. This is done by hard-setting the spacing dimensions. Set to FALSE if you want LaTeX to optimize this for your paper. 
+bibliography: Tex/ref.bib       # Do not edit: Keep this naming convention and location.
+RemovePreprintSubmittedTo: TRUE  # Removes the 'preprint submitted to...' at bottom of titlepage
+Journal: "Journal of Finance"   # Journal that the paper will be submitting to, if RemovePreprintSubmittedTo is set to TRUE.
+toc: no                         # Add a table of contents
+numbersections: yes             # Should sections (and thus figures and tables) be numbered?
+fontsize: 11pt                  # Set fontsize
+linestretch: 1.2                # Set distance between lines.
+link-citations: TRUE            # This creates dynamic links to the papers in reference list.
+output:
+  pdf_document:
+    keep_tex: TRUE
+    template: Tex/TexDefault.txt
+    fig_width: 3.5 # Adjust default figure sizes. This can also be done in the chunks of the text.
+    fig_height: 3.5
+    include:
+      in_header: Tex/packages.txt # Reference file with extra packages
+abstract: |
+  Abstract to be written here. The abstract should not be too long and should provide the reader with a good understanding what you are writing about. Academic papers are not like novels where you keep the reader in suspense. To be effective in getting others to read your paper, be as open and concise about your findings here as possible. Ideally, upon reading your abstract, the reader should feel he / she must read your paper in entirety.
+---
+
+<!-- First: Set your default preferences for chunk options: -->
+
+<!-- If you want a chunk's code to be printed, set echo = TRUE. message = FALSE stops R printing ugly package loading details in your final paper too. I also suggest setting warning = FALSE and checking for warnings in R, else you might find ugly warnings in your paper. -->
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.width = 6, fig.height = 5, fig.pos="H", fig.pos = 'H')
+# Note: Include = FALSE implies the code is executed, but not printed in your pdf.
+# warning and message = FALSE implies ugly messages and warnings are removed from your pdf. These should be picked up when you execute the command chunks (code sections below) in your rmd, not printed in your paper!
+
+```
+
+
+<!-- ############################## -->
+<!-- # Start Writing here: -->
+<!-- ############################## -->
+
+# Introduction \label{Introduction}
+
+References are to be made as follows: @fama1997[p. 33] and @grinold2000. Source the reference code from scholar.google.com by clicking on ``cite'' below article name. Then select BibTeX at the bottom of the Cite window, and proceed to copy and paste this code into your ref.bib file, located in the directory's Tex folder. Open this file in Rstudio for ease of management, else open it in your preferred Tex environment. Add and manage your article details here for simplicity - once saved, it will self-adjust in your paper.
+
+To reference a section, you have to set a label using ``\\label'' in R, and then reference it in-text as e.g.: section \ref{Data}.
+
+
+Writing in Rmarkdown is surprizingly easy - see [this website](https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf) cheatsheet for a summary on writing Rmd writing tips.
+
+# Data \label{Data}
+
+Discussion of data should be thorough with a table of statistics and ideally a figure. 
+
+In your tempalte folder, you will find a Data and a Code folder. In order to keep your data files neat, store all of them in your Data folder. Also, I strongly suggest keeping this Rmd file for writing and executing commands, not writing out long pieces of data-wrangling. In the example below, I simply create a ggplot template for scatter plot consistency. I suggest keeping all your data in a data folder.
+
+```{r Figure1, warning =  FALSE, fig.align = 'center', fig.cap = "Caption Here \\label{Figure1}", fig.ext = 'png', fig.height = 3, fig.width = 6}
+
+library(dplyr)
+library(readr)
+library(ggplot2)
+
+if (!file.exists(file.path(getwd(), "code/Example_Plot_Scatter.R"))) {
+  g <-
+  ggplot(data = mtcars %>% tbl_df()) + # All data must be tbl_df()::: class(mtcars %>% tbl_df())
+  geom_point(aes(x = disp, y = hp, color = cyl)) +
+  theme_bw() +
+  # theme(legend.position = "none") +
+  theme(plot.title = element_text(size = 10)) +
+  theme(axis.title = element_text(size = 10), 
+        axis.title.x = element_text()) +
+  ylab("y-axis") +
+  xlab("x-axis")
+
+print(g)  
+
+} else {
+
+  WD <- getwd()
+
+# Load ExampleData using read_rds or read_csv from readr package:
+ExampleData <- read_csv( file.path(WD, "data/ExampleData.csv") )
+
+source( file.path(WD, "code/Example_Plot_Scatter.R") ) # Load a function from your 'code' folder. This e.g. plots scatters to your own preferences.
+source( file.path(WD, "code/Data_Create.R") ) # 
+  
+}
+
+```
+
+To reference the plot above, add a ``\\label'' after the caption in the chunk heading, as done above. Then reference the plot as such: As can be seen, figure \ref{Figure1} is excellent. The nice thing now is that it correctly numbers all your figures (and sections or tables) and will update if it moves. The links are also dynamic.
+
+I very strongly suggest using ggplot2 (ideally in combination with dplyr) using the ggtheme package to change the themes of your figures.
+
+Also note the information that I have placed above the chunks in the code chunks for the figures. You can edit any of these easily - visit the Rmarkdown webpage for more information.
+
+#  Methodology
+
+## Subsection
+Ideally do not overuse subsections. It equates to bad writing.^[This is an example of a footnote by the way. Something that should also not be overused.]
+
+## Math section
+
+Equations should be written as such:
+
+\begin{align} 
+	y_t &= c + B(L) y_{t-1} + e_t   \label{eq2}    \\ \notag 
+	e_t &= H_t^{1/2}  z_t ; \quad z_t \sim  N(0,I_N) \quad \& \quad H_t = D_tR_tD_t \\ \notag
+		D_t^2 &= {\sigma_{1,t}, \dots, \sigma_{N,t}}   \\ \notag
+		\sigma_{i,t}^2 &= \gamma_i+\kappa_{i,t}  v_{i, t-1}^2 +\eta_i  \sigma_{i, t-1}^2, \quad \forall i \\ \notag
+		R_{t, i, j} &= {diag(Q_{t, i, j}}^{-1}) . Q_{t, i, j} . diag(Q_{t, i, j}^{-1})  \\ \notag
+		Q_{t, i, j} &= (1-\alpha-\beta)  \bar{Q} + \alpha  z_t  z_t'  + \beta  Q_{t, i, j} \notag
+\end{align}
+
+If you would like to see the equations as you type in Rmarkdown, use $ symbols instead (see this for yourself by adjusted the equation):
+
+$$
+\beta = \sum_{i = 1}^{\infty}\frac{\alpha^2}{\sigma_{t-1}^2} \\ 
+\int_{x = 1}^{\infty}x_{i} = 1
+$$
+<!-- $$ -->
+<!-- This is a commented out section in the writing part. -->
+<!-- Comments are created by highlighting text, amnd pressing CTL+C -->
+<!-- $$ -->
+
+# Results
+
+
+Tables can be included as follows. Use the _xtable_ (or kable) package for tables. Table placement = H implies Latex tries to place the table Here, and not on a new page (there are, however, very many ways to skin this cat. Luckily there are many forums online!).
+
+
+```{r ShortTable, results = 'asis'}
+
+library(xtable)
+library(psych)
+library(rmsfuns)
+load_pkg(c("tidyverse", "devtools", "rugarch", "forecast", "tbl2xts", 
+    "lubridate", "PerformanceAnalytics", "ggthemes", "dplyr"))
+dailydata_raw <- read_csv("https://raw.githubusercontent.com/Nicktz/ExDat/master/extdata/findata.csv", 
+    col_types = cols(.default = "d", Date = "D"))
+rtn <- (diff(log(dailydata_raw %>% arrange(Date) %>% tbl_xts()), 
+             lag = 1)) * 100
+rtn <- rtn[-1, ]
+colnames(rtn) <- colnames(rtn) %>% gsub("JSE.", "", .) %>% gsub(".Close", "", .)
+
+rtndata <- rtn %>% xts_tbl() %>% gather(Ticker, Return, -date) %>% 
+  mutate(Return_Sqd = Return^2)
+
+rtndata1 <- rtndata %>% filter(date < ymd(20090101)) %>% dplyr::select(c(Return, Return_Sqd)) %>% psych::describe()
+rtndata2 <- rtndata %>% filter(date >= ymd(20100101) & date < ymd(20140101)) %>%
+  dplyr::select(c(Return, Return_Sqd)) %>% psych::describe()
+table1 <- xtable(rtndata1, caption = "1st and 2nd Moments (2006-2008) \\label{tab1}")
+  print.xtable(table1, 
+             # tabular.environment = "longtable",
+             floating = TRUE,
+             table.placement = 'H',
+             scalebox = 0.8,
+             # scalebox = 0.3, 
+             comment = FALSE,
+             caption.placement = 'bottom'
+             )
+  table2 <- xtable(rtndata2, caption = "1st and 2nd Moments (2010-2013) \\label{tab1}")
+  print.xtable(table2, 
+             # tabular.environment = "longtable",
+             floating = TRUE,
+             table.placement = 'H', 
+             scalebox = 0.8,
+             # scalebox = 0.3, 
+             comment = FALSE,
+             caption.placement = 'bottom'
+             )
+    cormat <- cor(rtn %>% xts_tbl() %>% dplyr::select(-date))
+  table3 <- xtable(cormat, caption = "Unconditional Correlations \\label{tab1}")
+  print.xtable(table3, 
+             # tabular.environment = "longtable",
+             floating = TRUE,
+             table.placement = 'H', 
+             # scalebox = 0.3, 
+             comment = FALSE,
+             caption.placement = 'bottom'
+             )
+```
+
+```{r figure3, warning =  FALSE, fig.align = 'center', fig.cap = "Pairs Panel \\label{lit}", fig.ext = 'png', fig.width = 6}
+pairs.panels(rtn %>% xts_tbl() %>% dplyr::select(-date))
+```
+
+```{r ShortTable1, results = 'asis'}
+library(xtable)
+library(psych)
+library(rmsfuns)
+library(rugarch)
+load_pkg(c("tidyverse", "devtools", "rugarch", "forecast", "tbl2xts", 
+    "lubridate", "PerformanceAnalytics", "ggthemes", "dplyr"))
+dailydata_raw <- read_csv("https://raw.githubusercontent.com/Nicktz/ExDat/master/extdata/findata.csv", 
+    col_types = cols(.default = "d", Date = "D"))
+
+rtn <- (diff(log(dailydata_raw %>% arrange(Date) %>% tbl_xts()), lag = 1)) * 100
+rtn <- rtn[-1, ]
+colnames(rtn) <- colnames(rtn) %>% gsub("JSE.", "", .) %>% gsub(".Close", "", .)
+rtn3 <- scale(rtn, center = T, scale = F)
+rtn3 <- Return.clean(rtn3, method = c("none", "boudt", "geltner")[2], alpha = 0.01)
+Rtn3 <- log(1 + rtn3/100) * 100
+
+garch11 <- ugarchspec(variance.model = list(model = c("sGARCH", 
+  "gjrGARCH", "eGARCH", "fGARCH", "apARCH")[2], garchOrder = c(1, 
+  1)), mean.model = list(armaOrder = c(1, 0), include.mean = TRUE), 
+  distribution.model = c("norm", "snorm", "std", "sstd", "ged", 
+  "sged", "nig", "ghyp", "jsu")[1])
+garchfit_ABSP = ugarchfit(spec = garch11, data = as.matrix(Rtn3[ , "ABSP"]))
+garchfit_BVT = ugarchfit(spec = garch11, data = as.matrix(Rtn3[ , "BVT"]))
+garchfit_FSR = ugarchfit(spec = garch11, data = as.matrix(Rtn3[ , "FSR"]))
+garchfit_NBKP = ugarchfit(spec = garch11, data = as.matrix(Rtn3[ , "NBKP"]))
+garchfit_RMH = ugarchfit(spec = garch11, data = as.matrix(Rtn3[ , "RMH"]))
+garchfit_SBK = ugarchfit(spec = garch11, data = as.matrix(Rtn3[ , "SBK"]))
+garchfit_SLM = ugarchfit(spec = garch11, data = as.matrix(Rtn3[ , "SLM"]))
+
+vxreg1 <- as.matrix(garchfit_SLM@fit$var)
+garch11_vxreg1 <- ugarchspec(variance.model = list(model = "gjrGARCH", external.regressors = vxreg1, garchOrder = c(1, 
+                  1)), mean.model = list(armaOrder = c(1, 0), include.mean = TRUE), 
+                  distribution.model = c("norm", "snorm", "std", "sstd", "ged", 
+                  "sged", "nig", "ghyp", "jsu")[1])
+garchfit_ABSP_vxreg1 = ugarchfit(spec = garch11_vxreg1, data = as.matrix(Rtn3[ , "ABSP"]))
+
+table4 <- xtable(garchfit_ABSP@fit$matcoef, caption = "GARCH11 \\label{tab1}")
+table5 <- xtable(garchfit_ABSP_vxreg1@fit$matcoef, caption = "GARCH11 with SLM external regressor  \\label{tab1}")
+print.xtable(table4, 
+             # tabular.environment = "longtable",
+             floating = TRUE,
+             table.placement = 'H', 
+             # scalebox = 0.3, 
+             comment = FALSE,
+             caption.placement = 'bottom'
+             )
+print.xtable(table5, 
+             # tabular.environment = "longtable",
+             floating = TRUE,
+             table.placement = 'H', 
+             # scalebox = 0.3, 
+             comment = FALSE,
+             caption.placement = 'bottom'
+             )
+```
+```
+To reference calculations in text, do this: From table \ref{tab1} we see the average value of mpg is `r mean(mtcars[1:5,]$mpg)`.
+
+According to the work of @Tsay1989, blah blah
+!
+
+# Conclusion
+
+<!-- Make title of bibliography here: -->
+<!-- \newpage -->
+
+# References

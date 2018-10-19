@@ -1,0 +1,414 @@
+\documentclass[11pt,preprint, authoryear]{elsarticle}
+
+\usepackage{lmodern}
+%%%% My spacing
+\usepackage{setspace}
+\setstretch{1.2}
+\DeclareMathSizes{12}{14}{10}{10}
+
+% Wrap around which gives all figures included the [H] command, or places it "here". This can be tedious to code in Rmarkdown.
+\usepackage{float}
+\let\origfigure\figure
+\let\endorigfigure\endfigure
+\renewenvironment{figure}[1][2] {
+    \expandafter\origfigure\expandafter[H]
+} {
+    \endorigfigure
+}
+
+\let\origtable\table
+\let\endorigtable\endtable
+\renewenvironment{table}[1][2] {
+    \expandafter\origtable\expandafter[H]
+} {
+    \endorigtable
+}
+
+
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+    \usepackage{xltxtra,xunicode}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
+  \newcommand{\euro}{€}
+\fi
+
+\usepackage{amssymb, amsmath, amsthm, amsfonts}
+
+\def\bibsection{\section*{References}} %%% Make "References" appear before bibliography
+
+
+\usepackage[round]{natbib}
+\bibliographystyle{plainnat}
+
+\usepackage{longtable}
+\usepackage[margin=2.3cm,bottom=2cm,top=2.5cm, includefoot]{geometry}
+\usepackage{fancyhdr}
+\usepackage[bottom, hang, flushmargin]{footmisc}
+\usepackage{graphicx}
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+\numberwithin{table}{section}
+\setlength{\parindent}{0cm}
+\setlength{\parskip}{1.3ex plus 0.5ex minus 0.3ex}
+\usepackage{textcomp}
+\renewcommand{\headrulewidth}{0.2pt}
+\renewcommand{\footrulewidth}{0.3pt}
+
+\usepackage{array}
+\newcolumntype{x}[1]{>{\centering\arraybackslash\hspace{0pt}}p{#1}}
+
+%%%%  Remove the "preprint submitted to" part. Don't worry about this either, it just looks better without it:
+\makeatletter
+\def\ps@pprintTitle{%
+  \let\@oddhead\@empty
+  \let\@evenhead\@empty
+  \let\@oddfoot\@empty
+  \let\@evenfoot\@oddfoot
+}
+\makeatother
+
+ \def\tightlist{} % This allows for subbullets!
+
+\usepackage{hyperref}
+\hypersetup{breaklinks=true,
+            bookmarks=true,
+            colorlinks=true,
+            citecolor=blue,
+            urlcolor=blue,
+            linkcolor=blue,
+            pdfborder={0 0 0}}
+
+
+% The following packages allow huxtable to work:
+\usepackage{siunitx}
+\usepackage{multirow}
+\usepackage{hhline}
+\usepackage{calc}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{colortbl}
+
+\urlstyle{same}  % don't use monospace font for urls
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\setcounter{secnumdepth}{5}
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+
+%%% Include extra packages specified by user
+% Insert custom packages here as follows
+% \usepackage{tikz}
+
+%%% Hard setting column skips for reports - this ensures greater consistency and control over the length settings in the document.
+%% page layout
+%% paragraphs
+\setlength{\baselineskip}{12pt plus 0pt minus 0pt}
+\setlength{\parskip}{12pt plus 0pt minus 0pt}
+\setlength{\parindent}{0pt plus 0pt minus 0pt}
+%% floats
+\setlength{\floatsep}{12pt plus 0 pt minus 0pt}
+\setlength{\textfloatsep}{20pt plus 0pt minus 0pt}
+\setlength{\intextsep}{14pt plus 0pt minus 0pt}
+\setlength{\dbltextfloatsep}{20pt plus 0pt minus 0pt}
+\setlength{\dblfloatsep}{14pt plus 0pt minus 0pt}
+%% maths
+\setlength{\abovedisplayskip}{12pt plus 0pt minus 0pt}
+\setlength{\belowdisplayskip}{12pt plus 0pt minus 0pt}
+%% lists
+\setlength{\topsep}{10pt plus 0pt minus 0pt}
+\setlength{\partopsep}{3pt plus 0pt minus 0pt}
+\setlength{\itemsep}{5pt plus 0pt minus 0pt}
+\setlength{\labelsep}{8mm plus 0mm minus 0mm}
+\setlength{\parsep}{\the\parskip}
+\setlength{\listparindent}{\the\parindent}
+%% verbatim
+\setlength{\fboxsep}{5pt plus 0pt minus 0pt}
+
+
+
+\begin{document}
+
+\begin{frontmatter}  %
+
+\title{Marinus\_Tutorial}
+
+% Set to FALSE if wanting to remove title (for submission)
+
+
+
+
+\author[Add1]{Marinus Louw}
+\ead{marinuslouw@icloud.com}
+
+
+
+
+
+\address[Add1]{Financial Economtrics Course, Stellenbosch University, South Africa}
+
+\cortext[cor]{Corresponding author: Marinus Louw}
+
+\begin{abstract}
+\small{
+Abstract to be written here. The abstract should not be too long and
+should provide the reader with a good understanding what you are writing
+about. Academic papers are not like novels where you keep the reader in
+suspense. To be effective in getting others to read your paper, be as
+open and concise about your findings here as possible. Ideally, upon
+reading your abstract, the reader should feel he / she must read your
+paper in entirety.
+}
+\end{abstract}
+
+\vspace{1cm}
+
+\begin{keyword}
+\footnotesize{
+GARCH \\ \vspace{0.3cm}
+\textit{JEL classification} L250 \sep L100
+}
+\end{keyword}
+\vspace{0.5cm}
+\end{frontmatter}
+
+
+
+%________________________
+% Header and Footers
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagestyle{fancy}
+\chead{}
+\rhead{}
+\lfoot{}
+\rfoot{\footnotesize Page \thepage\\}
+\lhead{}
+%\rfoot{\footnotesize Page \thepage\ } % "e.g. Page 2"
+\cfoot{}
+
+%\setlength\headheight{30pt}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%________________________
+
+\headsep 35pt % So that header does not go over title
+
+
+
+
+\section{\texorpdfstring{Introduction
+\label{Introduction}}{Introduction }}\label{introduction}
+
+References are to be made as follows: Fama and French
+(\protect\hyperlink{ref-fama1997}{1997}, 33) and Grinold and Kahn
+(\protect\hyperlink{ref-grinold2000}{2000}). Source the reference code
+from scholar.google.com by clicking on ``cite'' below article name. Then
+select BibTeX at the bottom of the Cite window, and proceed to copy and
+paste this code into your ref.bib file, located in the directory's Tex
+folder. Open this file in Rstudio for ease of management, else open it
+in your preferred Tex environment. Add and manage your article details
+here for simplicity - once saved, it will self-adjust in your paper.
+
+To reference a section, you have to set a label using
+``\textbackslash{}label'' in R, and then reference it in-text as e.g.:
+section \ref{Data}.
+
+Writing in Rmarkdown is surprizingly easy - see
+\href{https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf}{this
+website} cheatsheet for a summary on writing Rmd writing tips.
+
+\section{\texorpdfstring{Data \label{Data}}{Data }}\label{data}
+
+Discussion of data should be thorough with a table of statistics and
+ideally a figure.
+
+In your tempalte folder, you will find a Data and a Code folder. In
+order to keep your data files neat, store all of them in your Data
+folder. Also, I strongly suggest keeping this Rmd file for writing and
+executing commands, not writing out long pieces of data-wrangling. In
+the example below, I simply create a ggplot template for scatter plot
+consistency. I suggest keeping all your data in a data folder.
+
+To reference the plot above, add a ``\textbackslash{}label'' after the
+caption in the chunk heading, as done above. Then reference the plot as
+such: As can be seen, figure \ref{Figure1} is excellent. The nice thing
+now is that it correctly numbers all your figures (and sections or
+tables) and will update if it moves. The links are also dynamic.
+
+I very strongly suggest using ggplot2 (ideally in combination with
+dplyr) using the ggtheme package to change the themes of your figures.
+
+Also note the information that I have placed above the chunks in the
+code chunks for the figures. You can edit any of these easily - visit
+the Rmarkdown webpage for more information.
+
+\section{Methodology}\label{methodology}
+
+\subsection{Subsection}\label{subsection}
+
+Ideally do not overuse subsections. It equates to bad writing.\footnote{This
+  is an example of a footnote by the way. Something that should also not
+  be overused.}
+
+\subsection{Math section}\label{math-section}
+
+Equations should be written as such:
+
+\begin{align} 
+    y_t &= c + B(L) y_{t-1} + e_t   \label{eq2}    \\ \notag 
+    e_t &= H_t^{1/2}  z_t ; \quad z_t \sim  N(0,I_N) \quad \& \quad H_t = D_tR_tD_t \\ \notag
+        D_t^2 &= {\sigma_{1,t}, \dots, \sigma_{N,t}}   \\ \notag
+        \sigma_{i,t}^2 &= \gamma_i+\kappa_{i,t}  v_{i, t-1}^2 +\eta_i  \sigma_{i, t-1}^2, \quad \forall i \\ \notag
+        R_{t, i, j} &= {diag(Q_{t, i, j}}^{-1}) . Q_{t, i, j} . diag(Q_{t, i, j}^{-1})  \\ \notag
+        Q_{t, i, j} &= (1-\alpha-\beta)  \bar{Q} + \alpha  z_t  z_t'  + \beta  Q_{t, i, j} \notag
+\end{align}
+
+If you would like to see the equations as you type in Rmarkdown, use \$
+symbols instead (see this for yourself by adjusted the equation):
+
+\[
+\beta = \sum_{i = 1}^{\infty}\frac{\alpha^2}{\sigma_{t-1}^2} \\ 
+\int_{x = 1}^{\infty}x_{i} = 1
+\]
+
+\section{Results}\label{results}
+
+Tables can be included as follows. Use the \emph{xtable} (or kable)
+package for tables. Table placement = H implies Latex tries to place the
+table Here, and not on a new page (there are, however, very many ways to
+skin this cat. Luckily there are many forums online!).
+
+\begin{table}[H]
+\centering
+\scalebox{0.8}{
+\begin{tabular}{rrrrrrrrrrrrrr}
+  \hline
+ & vars & n & mean & sd & median & trimmed & mad & min & max & range & skew & kurtosis & se \\ 
+  \hline
+Return &   1 & 4585.00 & -0.01 & 2.11 & 0.00 & -0.02 & 1.44 & -12.58 & 12.64 & 25.22 & 0.05 & 3.31 & 0.03 \\ 
+  Return\_Sqd &   2 & 4585.00 & 4.47 & 10.30 & 0.94 & 2.18 & 1.38 & 0.00 & 159.77 & 159.77 & 6.18 & 58.96 & 0.15 \\ 
+   \hline
+\end{tabular}
+}
+\caption{1st and 2nd Moments (2006-2008) \label{tab1}} 
+\end{table}\begin{table}[H]
+\centering
+\scalebox{0.8}{
+\begin{tabular}{rrrrrrrrrrrrrr}
+  \hline
+ & vars & n & mean & sd & median & trimmed & mad & min & max & range & skew & kurtosis & se \\ 
+  \hline
+Return &   1 & 7000.00 & 0.04 & 1.43 & 0.00 & 0.06 & 1.03 & -36.42 & 6.87 & 43.29 & -2.46 & 61.35 & 0.02 \\ 
+  Return\_Sqd &   2 & 7000.00 & 2.06 & 16.33 & 0.48 & 1.00 & 0.70 & 0.00 & 1326.58 & 1326.58 & 76.38 & 6184.91 & 0.20 \\ 
+   \hline
+\end{tabular}
+}
+\caption{1st and 2nd Moments (2010-2013) \label{tab1}} 
+\end{table}\begin{table}[H]
+\centering
+\begin{tabular}{rrrrrrrr}
+  \hline
+ & ABSP & BVT & FSR & NBKP & RMH & SBK & SLM \\ 
+  \hline
+ABSP & 1.00 & 0.02 & 0.01 & 0.18 & 0.05 & 0.04 & 0.04 \\ 
+  BVT & 0.02 & 1.00 & 0.50 & 0.04 & 0.48 & 0.50 & 0.49 \\ 
+  FSR & 0.01 & 0.50 & 1.00 & 0.01 & 0.76 & 0.71 & 0.51 \\ 
+  NBKP & 0.18 & 0.04 & 0.01 & 1.00 & -0.00 & 0.02 & 0.04 \\ 
+  RMH & 0.05 & 0.48 & 0.76 & -0.00 & 1.00 & 0.65 & 0.50 \\ 
+  SBK & 0.04 & 0.50 & 0.71 & 0.02 & 0.65 & 1.00 & 0.52 \\ 
+  SLM & 0.04 & 0.49 & 0.51 & 0.04 & 0.50 & 0.52 & 1.00 \\ 
+   \hline
+\end{tabular}
+\caption{Unconditional Correlations \label{tab1}} 
+\end{table}
+
+\begin{figure}[H]
+
+{\centering \includegraphics{Template_files/figure-latex/figure3-1} 
+
+}
+
+\caption{Pairs Panel \label{lit}}\label{fig:figure3}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{rrrrr}
+  \hline
+ &  Estimate &  Std. Error &  t value & Pr($>$$|$t$|$) \\ 
+  \hline
+mu & 0.01 & 0.01 & 0.84 & 0.40 \\ 
+  ar1 & -0.08 & 0.03 & -2.88 & 0.00 \\ 
+  omega & 0.06 & 0.01 & 5.36 & 0.00 \\ 
+  alpha1 & 0.19 & 0.03 & 6.22 & 0.00 \\ 
+  beta1 & 0.78 & 0.03 & 24.58 & 0.00 \\ 
+  gamma1 & -0.14 & 0.03 & -4.79 & 0.00 \\ 
+   \hline
+\end{tabular}
+\caption{GARCH11 \label{tab1}} 
+\end{table}\begin{table}[H]
+\centering
+\begin{tabular}{rrrrr}
+  \hline
+ &  Estimate &  Std. Error &  t value & Pr($>$$|$t$|$) \\ 
+  \hline
+mu & 0.01 & 0.01 & 0.85 & 0.39 \\ 
+  ar1 & -0.08 & 0.03 & -2.91 & 0.00 \\ 
+  omega & 0.05 & 0.01 & 5.12 & 0.00 \\ 
+  alpha1 & 0.20 & 0.03 & 6.53 & 0.00 \\ 
+  beta1 & 0.76 & 0.03 & 24.98 & 0.00 \\ 
+  gamma1 & -0.15 & 0.03 & -4.96 & 0.00 \\ 
+  vxreg1 & 0.01 & 0.00 & 2.91 & 0.00 \\ 
+   \hline
+\end{tabular}
+\caption{GARCH11 with SLM external regressor  \label{tab1}} 
+\end{table}
+
+``` To reference calculations in text, do this: From table \ref{tab1} we
+see the average value of mpg is 20.98.
+
+According to the work of Tsay (\protect\hyperlink{ref-Tsay1989}{1989}),
+blah blah !
+
+\section{Conclusion}\label{conclusion}
+
+\section*{References}\label{references}
+\addcontentsline{toc}{section}{References}
+
+\hypertarget{refs}{}
+\hypertarget{ref-fama1997}{}
+Fama, Eugene F, and Kenneth R French. 1997. ``Industry Costs of
+Equity.'' \emph{Journal of Financial Economics} 43 (2). Elsevier:
+153--93.
+
+\hypertarget{ref-grinold2000}{}
+Grinold, Richard C, and Ronald N Kahn. 2000. ``Active Portfolio
+Management.'' McGraw Hill New York, NY.
+
+\hypertarget{ref-Tsay1989}{}
+Tsay, Ruey S. 1989. ``Testing and Modeling Threshold Autoregressive
+Processes.'' \emph{Journal of the American Statistical Association} 84
+(405). Taylor \& Francis Group: 231--40.
+
+% Force include bibliography in my chosen format:
+
+\bibliographystyle{Tex/Texevier}
+\bibliography{Tex/ref}
+
+
+
+
+
+\end{document}
