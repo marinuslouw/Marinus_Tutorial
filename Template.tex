@@ -164,13 +164,7 @@
 
 \begin{abstract}
 \small{
-Abstract to be written here. The abstract should not be too long and
-should provide the reader with a good understanding what you are writing
-about. Academic papers are not like novels where you keep the reader in
-suspense. To be effective in getting others to read your paper, be as
-open and concise about your findings here as possible. Ideally, upon
-reading your abstract, the reader should feel he / she must read your
-paper in entirety.
+Abstract t
 }
 \end{abstract}
 
@@ -179,7 +173,7 @@ paper in entirety.
 \begin{keyword}
 \footnotesize{
 GARCH \\ \vspace{0.3cm}
-\textit{JEL classification} L250 \sep L100
+\textit{JEL classification} 
 }
 \end{keyword}
 \vspace{0.5cm}
@@ -211,84 +205,34 @@ GARCH \\ \vspace{0.3cm}
 \section{\texorpdfstring{Introduction
 \label{Introduction}}{Introduction }}\label{introduction}
 
-References are to be made as follows: Fama and French
-(\protect\hyperlink{ref-fama1997}{1997}, 33) and Grinold and Kahn
-(\protect\hyperlink{ref-grinold2000}{2000}). Source the reference code
-from scholar.google.com by clicking on ``cite'' below article name. Then
-select BibTeX at the bottom of the Cite window, and proceed to copy and
-paste this code into your ref.bib file, located in the directory's Tex
-folder. Open this file in Rstudio for ease of management, else open it
-in your preferred Tex environment. Add and manage your article details
-here for simplicity - once saved, it will self-adjust in your paper.
-
-To reference a section, you have to set a label using
-``\textbackslash{}label'' in R, and then reference it in-text as e.g.:
-section \ref{Data}.
-
-Writing in Rmarkdown is surprizingly easy - see
-\href{https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf}{this
-website} cheatsheet for a summary on writing Rmd writing tips.
+The objective of this tutorial is to accumulate experience in working
+with Texevier and RMarkdown. The tutorial was written in a README with
+accompanying R Scripts in order to neaten the process. The tutorial
+answers the following questions: * Create a summary table showing the
+first and second moments of the returns of these stocks for the
+following periods: + 2006 - 2008 + 2010 - 2013 * Calculate the
+unconditional (full sample) correlations between the stocks. * Plot the
+univariate GARCH ht processes for each of the series. * Plot the
+cumulative returns series of a portfolio that is equally weighted to
+each of the stocks - reweighted each year on the last day of June. * See
+if including the GARCH11 conditional volatility series of SLM
+(ht,Sanlam) improves the GARCH11 model fit of ABSP (interpret the
+p-value of the regressor).
 
 \section{\texorpdfstring{Data \label{Data}}{Data }}\label{data}
 
-Discussion of data should be thorough with a table of statistics and
-ideally a figure.
+After loading our findata we inspect the 1st and 2nd moments. From table
+\ref{Moments-A} and table \ref{Moments-B} it is evident that our sample
+period from 2006-2008 differs greatly from 2010 - 2013. Upon closer
+inspection we can see that both the mean and median for the 2nd moment
+of 2006-2008 is more than twice that of 2010-2013. This paired with the
+maximum 2nd moment value indicate towards considerably more volatility
+during the Global Financial Crisis (GFC) period.
 
-In your tempalte folder, you will find a Data and a Code folder. In
-order to keep your data files neat, store all of them in your Data
-folder. Also, I strongly suggest keeping this Rmd file for writing and
-executing commands, not writing out long pieces of data-wrangling. In
-the example below, I simply create a ggplot template for scatter plot
-consistency. I suggest keeping all your data in a data folder.
-
-To reference the plot above, add a ``\textbackslash{}label'' after the
-caption in the chunk heading, as done above. Then reference the plot as
-such: As can be seen, figure \ref{Figure1} is excellent. The nice thing
-now is that it correctly numbers all your figures (and sections or
-tables) and will update if it moves. The links are also dynamic.
-
-I very strongly suggest using ggplot2 (ideally in combination with
-dplyr) using the ggtheme package to change the themes of your figures.
-
-Also note the information that I have placed above the chunks in the
-code chunks for the figures. You can edit any of these easily - visit
-the Rmarkdown webpage for more information.
-
-\section{Methodology}\label{methodology}
-
-\subsection{Subsection}\label{subsection}
-
-Ideally do not overuse subsections. It equates to bad writing.\footnote{This
-  is an example of a footnote by the way. Something that should also not
-  be overused.}
-
-\subsection{Math section}\label{math-section}
-
-Equations should be written as such:
-
-\begin{align} 
-    y_t &= c + B(L) y_{t-1} + e_t   \label{eq2}    \\ \notag 
-    e_t &= H_t^{1/2}  z_t ; \quad z_t \sim  N(0,I_N) \quad \& \quad H_t = D_tR_tD_t \\ \notag
-        D_t^2 &= {\sigma_{1,t}, \dots, \sigma_{N,t}}   \\ \notag
-        \sigma_{i,t}^2 &= \gamma_i+\kappa_{i,t}  v_{i, t-1}^2 +\eta_i  \sigma_{i, t-1}^2, \quad \forall i \\ \notag
-        R_{t, i, j} &= {diag(Q_{t, i, j}}^{-1}) . Q_{t, i, j} . diag(Q_{t, i, j}^{-1})  \\ \notag
-        Q_{t, i, j} &= (1-\alpha-\beta)  \bar{Q} + \alpha  z_t  z_t'  + \beta  Q_{t, i, j} \notag
-\end{align}
-
-If you would like to see the equations as you type in Rmarkdown, use \$
-symbols instead (see this for yourself by adjusted the equation):
-
-\[
-\beta = \sum_{i = 1}^{\infty}\frac{\alpha^2}{\sigma_{t-1}^2} \\ 
-\int_{x = 1}^{\infty}x_{i} = 1
-\]
-
-\section{Results}\label{results}
-
-Tables can be included as follows. Use the \emph{xtable} (or kable)
-package for tables. Table placement = H implies Latex tries to place the
-table Here, and not on a new page (there are, however, very many ways to
-skin this cat. Luckily there are many forums online!).
+Structurally we can gather from the skewness and kurtosis values of the
+returns that our period from 2006-2008 have wide tails and fat tails,
+compared to 2010-2013 where we find negative skewness, indicating
+relatively more positive returns.
 
 \begin{table}[H]
 \centering
@@ -302,7 +246,7 @@ Return &   1 & 4585.00 & -0.01 & 2.11 & 0.00 & -0.02 & 1.44 & -12.58 & 12.64 & 2
    \hline
 \end{tabular}
 }
-\caption{1st and 2nd Moments (2006-2008) \label{tab1}} 
+\caption{1st and 2nd Moments (2006-2008) \label{Moments-A}} 
 \end{table}\begin{table}[H]
 \centering
 \scalebox{0.8}{
@@ -315,7 +259,7 @@ Return &   1 & 7000.00 & 0.04 & 1.43 & 0.00 & 0.06 & 1.03 & -36.42 & 6.87 & 43.2
    \hline
 \end{tabular}
 }
-\caption{1st and 2nd Moments (2010-2013) \label{tab1}} 
+\caption{1st and 2nd Moments (2010-2013) \label{Moments-B}} 
 \end{table}\begin{table}[H]
 \centering
 \begin{tabular}{rrrrrrrr}
@@ -331,17 +275,27 @@ ABSP & 1.00 & 0.02 & 0.01 & 0.18 & 0.05 & 0.04 & 0.04 \\
   SLM & 0.04 & 0.49 & 0.51 & 0.04 & 0.50 & 0.52 & 1.00 \\ 
    \hline
 \end{tabular}
-\caption{Unconditional Correlations \label{tab1}} 
-\end{table}
-
-\begin{figure}[H]
+\caption{Unconditional Correlations \label{Correlations}} 
+\end{table}\begin{figure}[H]
 
 {\centering \includegraphics{Template_files/figure-latex/figure3-1} 
 
 }
 
-\caption{Pairs Panel \label{lit}}\label{fig:figure3}
+\caption{Pairs Panel \label{Pairs}}\label{fig:figure3}
 \end{figure}
+
+Table \ref{Correlations} and Figure \ref{Pairs} above convey the
+unconditional correlations between the stocks as a table and a pairs
+panel.
+
+\section{Results}\label{results}
+
+The following section illustrate the GARCH ht processes of each stock
+along with the GARCH11 model for ABSP with a supplementary external
+regressor (SLM's conditional volatility).
+
+\ref{GARCH-A} \ref{GARCH-B}
 
 \begin{table}[H]
 \centering
@@ -357,7 +311,7 @@ mu & 0.01 & 0.01 & 0.84 & 0.40 \\
   gamma1 & -0.14 & 0.03 & -4.79 & 0.00 \\ 
    \hline
 \end{tabular}
-\caption{GARCH11 \label{tab1}} 
+\caption{GARCH11 \label{GARCH-A}} 
 \end{table}\begin{table}[H]
 \centering
 \begin{tabular}{rrrrr}
@@ -373,30 +327,16 @@ mu & 0.01 & 0.01 & 0.85 & 0.39 \\
   vxreg1 & 0.01 & 0.00 & 2.91 & 0.00 \\ 
    \hline
 \end{tabular}
-\caption{GARCH11 with SLM external regressor  \label{tab1}} 
+\caption{GARCH11 with SLM external regressor  \label{GARCH-B}} 
 \end{table}
 
-``` To reference calculations in text, do this: From table \ref{tab1} we
-see the average value of mpg is 20.98.
-
 According to the work of Tsay (\protect\hyperlink{ref-Tsay1989}{1989}),
-blah blah !
-
-\section{Conclusion}\label{conclusion}
+blah blah
 
 \section*{References}\label{references}
 \addcontentsline{toc}{section}{References}
 
 \hypertarget{refs}{}
-\hypertarget{ref-fama1997}{}
-Fama, Eugene F, and Kenneth R French. 1997. ``Industry Costs of
-Equity.'' \emph{Journal of Financial Economics} 43 (2). Elsevier:
-153--93.
-
-\hypertarget{ref-grinold2000}{}
-Grinold, Richard C, and Ronald N Kahn. 2000. ``Active Portfolio
-Management.'' McGraw Hill New York, NY.
-
 \hypertarget{ref-Tsay1989}{}
 Tsay, Ruey S. 1989. ``Testing and Modeling Threshold Autoregressive
 Processes.'' \emph{Journal of the American Statistical Association} 84
