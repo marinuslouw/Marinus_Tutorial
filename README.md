@@ -12,4 +12,11 @@
 * Plot the cumulative returns series of a portfolio that is equally weighted to each of the stocks - reweighted each year on the last day of June.
 * See if including the GARCH11 conditional volatility series of SLM (ht,Sanlam) improves the GARCH11 model fit of ABSP (interpret the p-value of the regressor).
 
-## 
+## Methodology
+##### The tutorial questions are answered by writing the necessary code in functions within the following R scripts:
+* Packages.R - containing the necessary packages for each chunk of code.
+* Load_data.R - a function to load the findata from https://raw.githubusercontent.com/Nicktz
+* Moments_Table.R - a function containing the 1st and 2nd moments of 2006-2008 and 2010-2013
+* Correlations_Table.R - a function creating a correlations table using base R's cor function
+* Pairs_panels.R - a function creating visual pairs panels using the psych package's pairs.panels function to supplement the Correlations_Table.R
+* Garch_table.R - a function creating the GARCH specifications, fits, model coefficients tables and information criteria tables

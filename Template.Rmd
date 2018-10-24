@@ -3,7 +3,7 @@
 # Remove comments and add values where applicable. 
 # The descriptions below should be self-explanatory
 
-title: "Marinus_Tutorial"
+title: "Financial Econometrics Tutorial - Marinus_Tutorial"
 #subtitle: "This will appear as Right Header"
 
 documentclass: "elsarticle"
@@ -50,7 +50,7 @@ output:
     include:
       in_header: Tex/packages.txt # Reference file with extra packages
 abstract: |
-  Abstract t
+ The following tutorial makes use of financial data from the JSE to build individual GARCH models from which volatility forecasts can be made. The tutorial also aims to improve the ABSA GARCH model's forecast accuracy by specifying the conditional volatility of Sanlam as an external regressor in the variance model. The \ref{Results} found that ABSA's GARCH model's predictive power is improved by including Sanlam as an external regressor.
 ---
 
 <!-- First: Set your default preferences for chunk options: -->
@@ -70,19 +70,12 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.width 
 <!-- ############################## -->
 
 # Introduction \label{Introduction}
-The objective of this tutorial is to accumulate experience in working with Texevier and RMarkdown. The tutorial was written in a README with accompanying R Scripts in order to neaten the process. The tutorial answers the following questions:
-* Create a summary table showing the first and second moments of the returns of these stocks for the following periods:
-+ 2006 - 2008
-+ 2010 - 2013
-* Calculate the unconditional (full sample) correlations between the stocks.
-* Plot the univariate GARCH ht processes for each of the series.
-* Plot the cumulative returns series of a portfolio that is equally weighted to each of the stocks - reweighted each year on the last day of June.
-* See if including the GARCH11 conditional volatility series of SLM (ht,Sanlam) improves the GARCH11 model fit of ABSP (interpret the p-value of the regressor).
+The objective of this tutorial is to accumulate experience in working with Texevier and RMarkdown. The tutorial is outlined in the accompanying README with the bulk of the code written in functions within R Scripts in order to neaten the write-up process. The tutorial answers the questions as outlined in the README document.
 
 # Data \label{Data}
-After loading our findata we inspect the 1st and 2nd moments. From table \ref{Moments-A} and table \ref{Moments-B} it is evident that our sample period from 2006-2008 differs greatly from 2010 - 2013. Upon closer inspection we can see that both the mean and median for the 2nd moment of 2006-2008 is more than twice that of 2010-2013. This paired with the maximum 2nd moment value indicate towards considerably more volatility during the Global Financial Crisis (GFC) period.
+After loading our findata we inspect the 1st and 2nd moments. From table \ref{Moments-A} and table \ref{Moments-B} it is evident that our sample period from 2006-2008 differs greatly from 2010-2013. Upon closer inspection we can see that both the mean and median for the 2nd moment of 2006-2008 is more than twice that of 2010-2013. This paired with the maximum 2nd moment value indicate towards considerably more volatility during the Global Financial Crisis (GFC) period.
 
-Structurally we can gather from the skewness and kurtosis values of the returns that our period from 2006-2008 have wide tails and fat tails, compared to 2010-2013 where we find negative skewness, indicating relatively more positive returns. 
+Structurally we can gather from the skewness and kurtosis values of the returns that our period from 2006-2008 have wide and fat tails of volatility, compared to 2010-2013. Negative skewness for the period 2010-2013, indicate relatively more positive returns than the period 2006-2008.
 
 ```{r ShortTable, results = 'asis'}
 source(file.path(getwd(), "code/Packages.R"))
@@ -99,20 +92,17 @@ Pairs_panels()
 
 Table \ref{Correlations} and Figure \ref{Pairs} above convey the unconditional correlations between the stocks as a table and a pairs panel.
 
-# Results
+# Results \label{Results}
 
-The following section illustrate the GARCH ht processes of each stock along with the GARCH11 model for ABSP with a supplementary external regressor (SLM's conditional volatility). 
+The following section illustrate the GARCH ht processes of our ABSA GARCH11 model along with the ABSA GARCH11 model when an external regressor, SLM's conditional volatility, is included. 
 
-\ref{GARCH-A} \ref{GARCH-B}
+The model coefficients in table \ref{GARCH-A} and table \ref{GARCH-B} highlight the significance of the p-values. Table \ref{GARCH-B} indicate that the external regressor, SLM's conditional volatility, is significant. Table \ref{GARCH-C} and Table \ref{GARCH-D} exhibit the information criteria between the two models. The results indicate that including Sanlam's conditional volatility possibly improves the model's fit to the underlying data [@Tsay1989].
 
 ```{r GARCH-A, results = 'asis'}
 source(file.path(getwd(), "code/Packages.R"))
 Packages()
-```
-```{r GARCH-B, results = 'asis'}
 source(file.path(getwd(), "code/Garch_tables.R"))
 Garch_tables()
 ```
-According to the work of @Tsay1989, blah blah
 
-# References
+# References \label{References}
